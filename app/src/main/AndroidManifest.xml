@@ -25,5 +25,6 @@
         </activity>
         <activity android:name=".AutoWidthSortColumnActivity" />
         <activity android:name=".LayoutSizeExperimentActivity" />
+        <activity android:name=".LayoutModifierSizeExperimentActivity" />
     </application>
 </manifest>
