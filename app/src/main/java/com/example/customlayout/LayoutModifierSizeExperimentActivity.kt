@@ -1,7 +1,6 @@
 package com.example.customlayout
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.border
@@ -17,8 +16,8 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -109,8 +108,6 @@ class LayoutModifierSizeExperimentActivity : ComponentActivity() {
                     constraintOffSet.roundToPx(),
                     constraintOffSet.roundToPx()
                 ))
-                Log.d("Elisha", "$constraints")
-                Log.d("Elisha", "${placeable.width} ${placeable.height}")
                 layout(
                     placeable.width + layoutSizeChange.roundToPx(),
                     placeable.height + layoutSizeChange.roundToPx()
