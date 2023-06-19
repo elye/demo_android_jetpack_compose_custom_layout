@@ -1,6 +1,7 @@
 package com.example.customlayout
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.border
@@ -78,13 +79,7 @@ class LayoutModifierSizeExperimentActivity : ComponentActivity() {
                 modifier = Modifier.fillMaxSize()
             ) {
                 val size = parentSize.dp
-                Box(
-                    modifier = Modifier
-                        .width(size)
-                        .height(size)
-                        .border(1.dp, Color.Red)
-
-                ) {
+                BoxLayout(size, Color.Red, layoutSizeChange.dp, constraintOffSet.dp) {
                     BoxLayout(size, Color.Green, layoutSizeChange.dp, constraintOffSet.dp) {
                         BoxLayout(size, Color.Blue, layoutSizeChange.dp, constraintOffSet.dp) {
                             BoxLayout(size, Color.Magenta, layoutSizeChange.dp, constraintOffSet.dp) {
@@ -114,6 +109,8 @@ class LayoutModifierSizeExperimentActivity : ComponentActivity() {
                     constraintOffSet.roundToPx(),
                     constraintOffSet.roundToPx()
                 ))
+                Log.d("Elisha", "$constraints")
+                Log.d("Elisha", "${placeable.width} ${placeable.height}")
                 layout(
                     placeable.width + layoutSizeChange.roundToPx(),
                     placeable.height + layoutSizeChange.roundToPx()
