@@ -3,12 +3,19 @@ package com.example.customlayout
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Surface
@@ -24,6 +31,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.offset
 import com.example.customlayout.ui.theme.CustomLayoutTheme
 
 class LayoutSizeExperimentActivity : ComponentActivity() {
@@ -47,66 +55,178 @@ class LayoutSizeExperimentActivity : ComponentActivity() {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            var parentSize by remember { mutableStateOf(150) }
-            Text(text = "Parent's Size: $parentSize")
-            Slider(
-                value = parentSize.toFloat(),
-                onValueChange = { parentSize = it.toInt() },
-                valueRange = 0f..300f
-            )
-            var layoutSize by remember { mutableStateOf(150) }
-            Text(text = "Layout's Size: $layoutSize")
-            Slider(
-                value = layoutSize.toFloat(),
-                onValueChange = { layoutSize = it.toInt() },
-                valueRange = 0f..300f
-            )
+            val textWidth = 180.dp
+            var boxSize by remember { mutableStateOf(150) }
+            var parentSizeX by remember { mutableStateOf(0.9f) }
+            var parentSizeY by remember { mutableStateOf(0.9f) }
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = "X Ratio: ${parentSizeX.format(2)}",
+                    modifier = Modifier.width(textWidth)
+                )
+                Slider(
+                    value = parentSizeX,
+                    onValueChange = { parentSizeX = it },
+                    valueRange = 0f..1f
+                )
+            }
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = "Y Ratio ${parentSizeY.format(2)}",
+                    modifier = Modifier.width(textWidth)
+                )
+                Slider(
+                    value = parentSizeY,
+                    onValueChange = { parentSizeY = it },
+                    valueRange = 0f..1f
+                )
+            }
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(text = "Size: $boxSize", modifier = Modifier.width(textWidth))
+                Slider(
+                    value = boxSize.toFloat(),
+                    onValueChange = { boxSize = it.toInt() },
+                    valueRange = 0f..300f
+                )
+            }
+            var layoutSizeChange by remember { mutableStateOf(0) }
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = "Layout's Change: $layoutSizeChange",
+                    modifier = Modifier.width(textWidth)
+                )
+                Slider(
+                    value = layoutSizeChange.toFloat(),
+                    onValueChange = { layoutSizeChange = it.toInt() },
+                    valueRange = -150f..150f
+                )
+            }
+            var constraintOffSet by remember { mutableStateOf(0) }
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = "Constraint Offset: $constraintOffSet",
+                    modifier = Modifier.width(textWidth)
+                )
+                Slider(
+                    value = constraintOffSet.toFloat(),
+                    onValueChange = { constraintOffSet = it.toInt() },
+                    valueRange = -150f..150f
+                )
+            }
+            var placementX by remember { mutableStateOf(0) }
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(text = "Placement X: $placementX", modifier = Modifier.width(textWidth))
+                Slider(
+                    value = placementX.toFloat(),
+                    onValueChange = { placementX = it.toInt() },
+                    valueRange = -150f..150f
+                )
+            }
+            var placementY by remember { mutableStateOf(0) }
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(text = "Placement Y: $placementY", modifier = Modifier.width(textWidth))
+                Slider(
+                    value = placementY.toFloat(),
+                    onValueChange = { placementY = it.toInt() },
+                    valueRange = -150f..150f
+                )
+            }
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier.fillMaxSize()
             ) {
-                Box(
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
                     modifier = Modifier
-                        .size(parentSize.dp)
-                        .border(1.dp, Color.Green)
+                        .fillMaxWidth(parentSizeX)
+                        .fillMaxHeight(parentSizeY)
+                        .background(Color.LightGray)
                 ) {
-                    val textModifier = Modifier.border(1.dp, Color.Blue)
-                    CustomLayout(layoutSize.dp, Modifier.size(parentSize.dp)) {
-                        Text("Hello There", modifier = textModifier)
-                        Text("Good", modifier = textModifier)
-                        Text("Longer please", modifier = textModifier)
-                        Text("More Text", modifier = textModifier)
+                    val size = boxSize.dp
+                    BoxLayout(
+                        size,
+                        Color.Red,
+                        layoutSizeChange.dp,
+                        constraintOffSet.dp,
+                        placementX.dp,
+                        placementY.dp
+                    ) {
+                        BoxLayout(
+                            size,
+                            Color.Green,
+                            layoutSizeChange.dp,
+                            constraintOffSet.dp,
+                            placementX.dp,
+                            placementY.dp
+                        ) {
+                            BoxLayout(
+                                size,
+                                Color.Blue,
+                                layoutSizeChange.dp,
+                                constraintOffSet.dp,
+                                placementX.dp,
+                                placementY.dp
+                            ) {
+                                BoxLayout(
+                                    size,
+                                    Color.Magenta,
+                                    layoutSizeChange.dp,
+                                    constraintOffSet.dp,
+                                    placementX.dp,
+                                    placementY.dp
+                                ) {
+                                    val textModifier = Modifier.border(1.dp, Color.Blue)
+                                    Text("Hello There", modifier = textModifier)
+                                    Text("Something Here", modifier = textModifier)
+                                    Text("Test it one", modifier = textModifier)
+                                    Text("Sometimes", modifier = textModifier)
+                                    Text("Short", modifier = textModifier)
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
-
     }
 
     @Composable
-    fun CustomLayout(
-        layoutSize: Dp,
-        modifier: Modifier = Modifier,
-        content: @Composable () -> Unit
+    fun BoxLayout(
+        size: Dp,
+        borderColor: Color,
+        layoutSizeChange: Dp,
+        constraintOffSet: Dp,
+        placementX: Dp,
+        placementY: Dp,
+        content: @Composable () -> Unit = {}
     ) {
         Layout(
-            modifier = modifier.border(2.dp, Color.Red),
+            modifier = Modifier
+                .width(size)
+                .height(size)
+                .border(1.dp, borderColor),
             content = content
         ) { measurables, constraints ->
-            val looseConstraints = constraints.copy(
-                minWidth = 0,
-                minHeight = 0,
-            )
             val placaebles = measurables.map { measurable ->
-                measurable.measure(constraints = looseConstraints)
+                val looseConstraints = constraints.copy(
+                    minWidth = 0,
+                    minHeight = 0,
+                )
+                measurable.measure(constraints = looseConstraints.offset(
+                    constraintOffSet.roundToPx(),
+                    constraintOffSet.roundToPx()
+                ))
             }
 
-            layout(layoutSize.roundToPx(), layoutSize.roundToPx()) {
-                var y = 0
-
+            layout(
+                placaebles.maxOf { it.width } + layoutSizeChange.roundToPx(),
+                placaebles.sumOf { it.height } + layoutSizeChange.roundToPx()
+            )  {
+                var y = placementY.roundToPx()
                 placaebles.forEach { placeable ->
-                    placeable.place(0, y)
+                    placeable.place(placementX.roundToPx(), y)
                     y += placeable.height
                 }
             }

@@ -55,7 +55,6 @@ class LayoutModifierSizeExperimentActivity : ComponentActivity() {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-
             val textWidth = 180.dp
             var boxSize by remember { mutableStateOf(150) }
             var parentSizeX by remember { mutableStateOf(0.9f) }
@@ -166,7 +165,8 @@ class LayoutModifierSizeExperimentActivity : ComponentActivity() {
                                     placementX.dp,
                                     placementY.dp
                                 ) {
-                                    Text("I am here")
+                                    val textModifier = Modifier.border(1.dp, Color.Cyan)
+                                    Text("Hello There", modifier = textModifier)
                                 }
                             }
                         }
@@ -206,6 +206,4 @@ class LayoutModifierSizeExperimentActivity : ComponentActivity() {
             }
             .border(1.dp, borderColor), content = content)
     }
-
-    private fun Float.format(digits: Int) = "%.${digits}f".format(this)
 }
