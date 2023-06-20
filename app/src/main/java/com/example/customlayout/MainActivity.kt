@@ -1,7 +1,5 @@
 package com.example.customlayout
 
-import android.content.ComponentName
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -45,6 +43,8 @@ class MainActivity : ComponentActivity() {
             ButtonLauncher(AutoWidthSortColumnActivity::class)
             ButtonLauncher(LayoutSizeExperimentActivity::class)
             ButtonLauncher(LayoutModifierSizeExperimentActivity::class)
+            ButtonLauncher(DividerColumnExperimentActivity::class)
+            ButtonLauncher(DividerLazyColumnExperimentActivity::class)
         }
     }
 
