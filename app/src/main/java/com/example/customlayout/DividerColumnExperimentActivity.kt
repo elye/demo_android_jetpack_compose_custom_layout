@@ -129,7 +129,7 @@ class DividerColumnExperimentActivity : ComponentActivity() {
                         layout(
                             placeable.width + layoutSizeChange.dp.roundToPx(),
                             placeable.height
-                        ) { placeable.place(placementX, placementY) }
+                        ) { placeable.place(placementX.dp.roundToPx(), placementY.dp.roundToPx()) }
                     }
                 )
             }
