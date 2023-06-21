@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -28,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layout
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.offset
 import com.example.customlayout.ui.theme.CustomLayoutTheme
@@ -94,37 +96,67 @@ class NegativePaddingExperimentActivity : ComponentActivity() {
             ) {
                 Text("0. Reference Divider")
                 Divider(modifier = Modifier.height(20.dp))
-                Text("1. OffSet Padding")
-                Divider(modifier = Modifier.height((20.dp)).offset(dividersPadding.dp))
+                Text("1. Offset Padding")
+                DividerOffset(dividersPadding)
                 Text("2. Required Width Padding")
-                Divider(modifier = Modifier.height(20.dp).requiredWidth(
-                            width = (parentWidth.dp - parentPadding.dp * 2 - dividersPadding.dp * 2),
-                ))
+                DividerRequiredWidth(parentWidth, parentPadding, dividersPadding)
                 Text("3. Layout Constraint Only Padding")
-                Divider(modifier = Modifier
-                    .height(20.dp)
-                    .layout { measurable, constraints ->
-                        val placeable =
-                            measurable.measure(constraints.offset((-dividersPadding * 2).dp.roundToPx()))
-                        layout(
-                            placeable.width,
-                            placeable.height
-                        ) { placeable.place(0, 0) }
-                    }
-                )
+                DividerLayoutConstraint(dividersPadding)
                 Text("4. Layout Managed Padding")
-                Divider(modifier = Modifier
-                    .height(20.dp)
-                    .layout { measurable, constraints ->
-                        val placeable =
-                            measurable.measure(constraints.offset((-dividersPadding * 2).dp.roundToPx()))
-                        layout(
-                            placeable.width + (dividersPadding * 2).dp.roundToPx(),
-                            placeable.height
-                        ) { placeable.place(0 + dividersPadding.dp.roundToPx(), 0) }
-                    }
-                )
+                DividerLayoutManaged(dividersPadding)
             }
         }
+    }
+
+    @Composable
+    private fun DividerLayoutManaged(dividersPadding: Int) {
+        Divider(modifier = Modifier
+            .height(20.dp)
+            .layout { measurable, constraints ->
+                val placeable =
+                    measurable.measure(constraints.offset((-dividersPadding * 2).dp.roundToPx()))
+                layout(
+                    placeable.width + (dividersPadding * 2).dp.roundToPx(),
+                    placeable.height
+                ) { placeable.place(0 + dividersPadding.dp.roundToPx(), 0) }
+            }
+        )
+    }
+
+    @Composable
+    private fun DividerLayoutConstraint(dividersPadding: Int) {
+        Divider(modifier = Modifier
+            .height(20.dp)
+            .layout { measurable, constraints ->
+                val placeable =
+                    measurable.measure(constraints.offset((-dividersPadding * 2).dp.roundToPx()))
+                layout(
+                    placeable.width,
+                    placeable.height
+                ) { placeable.place(0, 0) }
+            }
+        )
+    }
+
+    @Composable
+    private fun DividerRequiredWidth(
+        parentWidth: Int,
+        parentPadding: Int,
+        dividersPadding: Int
+    ) {
+        Divider(
+            modifier = Modifier
+                .height(20.dp)
+                .requiredWidth(
+                    width = (parentWidth.dp - parentPadding.dp * 2 - dividersPadding.dp * 2),
+                )
+        )
+    }
+
+    @Composable
+    private fun DividerOffset(dividersPadding: Int) {
+        Divider(modifier = Modifier
+            .height((20.dp))
+            .offset(dividersPadding.dp))
     }
 }
