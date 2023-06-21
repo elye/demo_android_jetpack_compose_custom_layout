@@ -28,5 +28,6 @@
         <activity android:name=".LayoutModifierSizeExperimentActivity" />
         <activity android:name=".DividerColumnExperimentActivity" />
         <activity android:name=".DividerLazyColumnExperimentActivity" />
+        <activity android:name=".NegativePaddingExperimentActivity" />
     </application>
 </manifest>

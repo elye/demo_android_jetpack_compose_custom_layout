@@ -45,6 +45,7 @@ class MainActivity : ComponentActivity() {
             ButtonLauncher(LayoutModifierSizeExperimentActivity::class)
             ButtonLauncher(DividerColumnExperimentActivity::class)
             ButtonLauncher(DividerLazyColumnExperimentActivity::class)
+            ButtonLauncher(NegativePaddingExperimentActivity::class)
         }
     }
 
