@@ -28,7 +28,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layout
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.offset
 import com.example.customlayout.ui.theme.CustomLayoutTheme
@@ -51,8 +50,6 @@ class NegativePaddingExperimentActivity : ComponentActivity() {
 
     @Composable
     fun Greeting() {
-        val density = LocalDensity.current
-
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
