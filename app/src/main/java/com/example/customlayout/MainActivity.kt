@@ -43,6 +43,7 @@ class MainActivity : ComponentActivity() {
             ButtonLauncher(AutoWidthSortColumnActivity::class)
             ButtonLauncher(LayoutSizeExperimentActivity::class)
             ButtonLauncher(LayoutModifierSizeExperimentActivity::class)
+            ButtonLauncher(LayoutModifierSingleExperimentActivity::class)
             ButtonLauncher(DividerColumnExperimentActivity::class)
             ButtonLauncher(DividerLazyColumnExperimentActivity::class)
             ButtonLauncher(NegativePaddingExperimentActivity::class)
