@@ -10,10 +10,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
@@ -128,6 +131,30 @@ class LayoutModifierSingleExperimentActivity : ComponentActivity() {
                     text = newText
                 }
             )
+            var fullWidthCheckedState by remember { mutableStateOf(false) }
+            var fullHeightCheckedState by remember { mutableStateOf(false) }
+            Row {
+                Row(modifier = Modifier.weight(1f),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Checkbox(
+                        checked = fullWidthCheckedState,
+                        onCheckedChange = { fullWidthCheckedState = it }
+                    )
+                    Text("Full Width")
+                }
+                Row(modifier = Modifier.weight(1f),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Checkbox(
+                        checked = fullHeightCheckedState,
+                        onCheckedChange = { fullHeightCheckedState = it }
+                    )
+                    Text("Full Height")
+                }
+            }
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
@@ -141,7 +168,14 @@ class LayoutModifierSingleExperimentActivity : ComponentActivity() {
                     placementX.dp,
                     placementY.dp
                 ) {
-                    Text(text.text)
+                    val modifier = Modifier
+                        .conditional(fullWidthCheckedState) {
+                            fillMaxWidth()
+                        }
+                        .conditional(fullHeightCheckedState) {
+                            fillMaxHeight()
+                        }
+                    Text(text.text, modifier = modifier)
                 }
             }
         }
@@ -171,12 +205,15 @@ class LayoutModifierSingleExperimentActivity : ComponentActivity() {
                 val placeable = measurable.measure(looseConstraints)
 
                 // Layout
-                layout(constraints.maxWidth + layoutSizeChange.roundToPx(),
-                    constraints.maxHeight + layoutSizeChange.roundToPx()) {
+                layout(
+                    constraints.maxWidth + layoutSizeChange.roundToPx(),
+                    constraints.maxHeight + layoutSizeChange.roundToPx()
+                ) {
                     placeable.place(placementX.roundToPx(), placementY.roundToPx())
                 }
             }
             .border(1.dp, Color.Red),
-            content = content)
+            content = content
+        )
     }
 }
