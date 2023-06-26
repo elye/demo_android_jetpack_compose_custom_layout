@@ -11,8 +11,10 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
@@ -86,7 +88,7 @@ class BoxAsDividerNegativePaddingBehaviorActivity :ComponentActivity() {
                 Slider(
                     value = layoutSizeChange.toFloat(),
                     onValueChange = { layoutSizeChange = it.toInt() },
-                    valueRange = -150f..150f
+                    valueRange = -200f..200f
                 )
             }
             var placement by remember { mutableStateOf(0) }
@@ -95,7 +97,7 @@ class BoxAsDividerNegativePaddingBehaviorActivity :ComponentActivity() {
                 Slider(
                     value = placement.toFloat(),
                     onValueChange = { placement = it.toInt() },
-                    valueRange = -150f..150f
+                    valueRange = -200f..200f
                 )
             }
             Column(
@@ -104,13 +106,17 @@ class BoxAsDividerNegativePaddingBehaviorActivity :ComponentActivity() {
                 modifier = Modifier.fillMaxSize()
             ) {
                 Column(
-                    modifier = Modifier.size(boxSize.dp).background(Color.Yellow)
+                    modifier = Modifier
+                        .size(boxSize.dp)
+                        .background(Color.Yellow)
                 ) {
                     BoxLayout(
                         constraintOffSet.dp,
                         layoutSizeChange.dp,
                         placement.dp
-                    )
+                    ) {
+                        Box(modifier = Modifier.fillMaxSize())
+                    }
                 }
             }
         }
@@ -124,14 +130,15 @@ class BoxAsDividerNegativePaddingBehaviorActivity :ComponentActivity() {
         content: @Composable BoxScope.() -> Unit = {}
     ) {
         Box(modifier = Modifier
-            .fillMaxSize()
             .background(GrayAlpha)
             .layout { measurable, constraints ->
                 // Measure
-                val placeable = measurable.measure(constraints.offset(
-                    constraintOffSet.roundToPx(),
-                    constraintOffSet.roundToPx()
-                ))
+                val placeable = measurable.measure(
+                    constraints.offset(
+                        constraintOffSet.roundToPx(),
+                        constraintOffSet.roundToPx()
+                    )
+                )
 
                 // Layout
                 layout(
