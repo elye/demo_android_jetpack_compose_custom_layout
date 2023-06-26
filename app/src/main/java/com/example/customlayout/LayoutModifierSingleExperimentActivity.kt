@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Checkbox
@@ -190,10 +189,11 @@ class LayoutModifierSingleExperimentActivity : ComponentActivity() {
         placementX: Dp,
         placementY: Dp,
         content: @Composable BoxScope.() -> Unit = {}
-    ) {
+    ) {        Box(modifier = Modifier.size(size).background(Color.Yellow)) {
+
         Box(modifier = Modifier
             .size(size)
-            .background(Color.LightGray)
+            .background(GrayAlpha)
             .layout { measurable, constraints ->
                 // Measure
                 val looseConstraints = constraints.copy(
@@ -215,5 +215,6 @@ class LayoutModifierSingleExperimentActivity : ComponentActivity() {
             .border(1.dp, Color.Red),
             content = content
         )
+    }
     }
 }

@@ -1,6 +1,7 @@
 package com.example.customlayout
 
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 
 fun Float.format(digits: Int) = "%.${digits}f".format(this)
 
@@ -11,3 +12,6 @@ fun Modifier.conditional(condition : Boolean, modifier : Modifier.() -> Modifier
         this
     }
 }
+
+val GrayAlpha: Color
+    get() = Color(148, 148, 148, 128)

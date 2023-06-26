@@ -125,7 +125,7 @@ class BoxAsDividerNegativePaddingBehaviorActivity :ComponentActivity() {
     ) {
         Box(modifier = Modifier
             .fillMaxSize()
-            .background(Color(148, 148, 148, 128))
+            .background(GrayAlpha)
             .layout { measurable, constraints ->
                 // Measure
                 val placeable = measurable.measure(constraints.offset(
