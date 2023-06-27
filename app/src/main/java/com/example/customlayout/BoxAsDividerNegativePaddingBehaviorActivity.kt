@@ -11,10 +11,9 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Divider
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
@@ -57,13 +56,32 @@ class BoxAsDividerNegativePaddingBehaviorActivity :ComponentActivity() {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             val textWidth = 180.dp
-            var boxSize by remember { mutableStateOf(150) }
+            var containerSize by remember { mutableStateOf(150) }
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(text = "Box Size: $boxSize", modifier = Modifier.width(textWidth))
+                Text(text = "Container Size: $containerSize", modifier = Modifier.width(textWidth))
+                Slider(
+                    value = containerSize.toFloat(),
+                    onValueChange = { containerSize = it.toInt() },
+                    valueRange = 0f..300f
+                )
+            }
+            var boxSize by remember { mutableStateOf(150) }
+            var useBoxSize by remember { mutableStateOf(false) }
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Row(modifier = Modifier.width(textWidth),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Checkbox(
+                        checked = useBoxSize,
+                        onCheckedChange = { useBoxSize = it }
+                    )
+                    Text(text = "Box Size: $boxSize")
+                }
                 Slider(
                     value = boxSize.toFloat(),
                     onValueChange = { boxSize = it.toInt() },
-                    valueRange = 0f..300f
+                    valueRange = 0f..300f,
+                    enabled = useBoxSize
                 )
             }
             var constraintOffSet by remember { mutableStateOf(0) }
@@ -100,20 +118,52 @@ class BoxAsDividerNegativePaddingBehaviorActivity :ComponentActivity() {
                     valueRange = -200f..200f
                 )
             }
+            var verticalCentered by remember { mutableStateOf(false) }
+            var horizontalCentered by remember { mutableStateOf(false) }
+            Row {
+                Row(modifier = Modifier.weight(1f),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Checkbox(
+                        checked = verticalCentered,
+                        onCheckedChange = { verticalCentered = it }
+                    )
+                    Text("Vertical Centered")
+                }
+                Row(modifier = Modifier.weight(1f),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Checkbox(
+                        checked = horizontalCentered,
+                        onCheckedChange = { horizontalCentered = it }
+                    )
+                    Text("Horizontal Centered")
+                }
+            }
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier.fillMaxSize()
             ) {
+                val horizontalAlignment = if (verticalCentered)
+                    Alignment.CenterHorizontally else Alignment.Start
+                val verticalArrangement = if (horizontalCentered)
+                    Arrangement.Center else Arrangement.Top
                 Column(
+                    horizontalAlignment = horizontalAlignment,
+                    verticalArrangement = verticalArrangement,
                     modifier = Modifier
-                        .size(boxSize.dp)
+                        .size(containerSize.dp)
                         .background(Color.Yellow)
                 ) {
                     BoxLayout(
                         constraintOffSet.dp,
                         layoutSizeChange.dp,
-                        placement.dp
+                        placement.dp,
+                        boxSize.dp,
+                        useBoxSize
                     ) {
                         Box(modifier = Modifier.fillMaxSize())
                     }
@@ -127,9 +177,14 @@ class BoxAsDividerNegativePaddingBehaviorActivity :ComponentActivity() {
         constraintOffSet: Dp,
         layoutSizeChange: Dp,
         placement: Dp,
+        boxSize: Dp,
+        useBoxSize: Boolean,
         content: @Composable BoxScope.() -> Unit = {}
     ) {
         Box(modifier = Modifier
+            .conditional(useBoxSize) {
+                size(boxSize)
+            }
             .background(GrayAlpha)
             .layout { measurable, constraints ->
                 // Measure
