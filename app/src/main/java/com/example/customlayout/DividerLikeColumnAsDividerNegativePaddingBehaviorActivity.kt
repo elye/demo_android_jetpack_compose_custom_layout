@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.offset
 import com.example.customlayout.ui.theme.CustomLayoutTheme
 
-class DividerLikeAsDividerNegativePaddingBehaviorActivity :ComponentActivity() {
+class DividerLikeColumnAsDividerNegativePaddingBehaviorActivity :ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

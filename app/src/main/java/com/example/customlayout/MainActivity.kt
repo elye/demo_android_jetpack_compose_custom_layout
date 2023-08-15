@@ -48,7 +48,8 @@ class MainActivity : ComponentActivity() {
             ButtonLauncher(DividerLazyColumnExperimentActivity::class)
             ButtonLauncher(NegativePaddingExperimentActivity::class)
             ButtonLauncher(BoxAsDividerNegativePaddingBehaviorActivity::class)
-            ButtonLauncher(DividerLikeAsDividerNegativePaddingBehaviorActivity::class)
+            ButtonLauncher(DividerLikeColumnAsDividerNegativePaddingBehaviorActivity::class)
+            ButtonLauncher(DividerLikeLazyColumnAsDividerNegativePaddingBehaviorActivity::class)
         }
     }
 
