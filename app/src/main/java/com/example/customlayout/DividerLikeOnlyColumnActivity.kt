@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.offset
 import com.example.customlayout.ui.theme.CustomLayoutTheme
 
-class DividerLikeColumnAsDividerNegativePaddingBehaviorActivity :ComponentActivity() {
+class DividerLikeOnlyColumnActivity :ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -67,38 +67,6 @@ class DividerLikeColumnAsDividerNegativePaddingBehaviorActivity :ComponentActivi
                     valueRange = 0f..300f
                 )
             }
-            var dividerWidth by remember { mutableStateOf(150) }
-            var useDividerWidth by remember { mutableStateOf(false) }
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Row(modifier = Modifier.width(textWidth),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Checkbox(
-                        checked = useDividerWidth,
-                        onCheckedChange = { useDividerWidth = it }
-                    )
-                    Text(text = "Divider Size: $dividerWidth")
-                }
-                Slider(
-                    value = dividerWidth.toFloat(),
-                    onValueChange = { dividerWidth = it.toInt() },
-                    valueRange = 0f..300f,
-                    enabled = useDividerWidth
-                )
-            }
-            var constraintOffSet by remember { mutableStateOf(0) }
-
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    text = "Constraint Offset: $constraintOffSet",
-                    modifier = Modifier.width(textWidth)
-                )
-                Slider(
-                    value = constraintOffSet.toFloat(),
-                    onValueChange = { constraintOffSet = it.toInt() },
-                    valueRange = -150f..150f
-                )
-            }
             var layoutSizeChange by remember { mutableStateOf(0) }
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
@@ -108,15 +76,6 @@ class DividerLikeColumnAsDividerNegativePaddingBehaviorActivity :ComponentActivi
                 Slider(
                     value = layoutSizeChange.toFloat(),
                     onValueChange = { layoutSizeChange = it.toInt() },
-                    valueRange = -200f..200f
-                )
-            }
-            var placement by remember { mutableStateOf(0) }
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(text = "Placement: $placement", modifier = Modifier.width(textWidth))
-                Slider(
-                    value = placement.toFloat(),
-                    onValueChange = { placement = it.toInt() },
                     valueRange = -200f..200f
                 )
             }
@@ -146,7 +105,6 @@ class DividerLikeColumnAsDividerNegativePaddingBehaviorActivity :ComponentActivi
             }
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
                 modifier = Modifier.fillMaxSize()
             ) {
                 val horizontalAlignment = if (verticalCentered)
@@ -166,12 +124,19 @@ class DividerLikeColumnAsDividerNegativePaddingBehaviorActivity :ComponentActivi
                             .height(height)
                             .fillMaxWidth())
                     Spacer(modifier = Modifier.height(height))
+                    Divider(modifier = Modifier
+                        .height(20.dp)
+                        .layout { measurable, constraints ->
+                            val placeable = measurable.measure(constraints)
+                            layout(
+                                width = layoutSizeChange.dp.roundToPx(),
+                                height = placeable.height
+                            ) { placeable.place(0, 0) }
+                        }
+                    )
+                    Spacer(modifier = Modifier.height(height))
                     DividerLayout(
-                        constraintOffSet.dp,
                         layoutSizeChange.dp,
-                        placement.dp,
-                        dividerWidth.dp,
-                        useDividerWidth
                     ) {
                         Box(modifier = Modifier
                             .height(height)
@@ -184,32 +149,21 @@ class DividerLikeColumnAsDividerNegativePaddingBehaviorActivity :ComponentActivi
 
     @Composable
     private fun DividerLayout(
-        constraintOffSet: Dp,
         layoutSizeChange: Dp,
-        placement: Dp,
-        dividerWidth: Dp,
-        useDividerWidth: Boolean,
         content: @Composable BoxScope.() -> Unit = {}
     ) {
         Box(modifier = Modifier
-            .conditional(useDividerWidth) {
-                size(dividerWidth)
-            }
             .background(GrayAlpha)
             .layout { measurable, constraints ->
                 // Measure
-                val placeable = measurable.measure(
-                    constraints.offset(
-                        constraintOffSet.roundToPx(), 0
-                    )
-                )
+                val placeable = measurable.measure(constraints)
 
                 // Layout
                 layout(
-                    placeable.width + layoutSizeChange.roundToPx(),
+                    layoutSizeChange.roundToPx(),
                     placeable.height
                 ) {
-                    placeable.place(placement.roundToPx(), 0)
+                    placeable.place(0, 0)
                 }
             }
             .border(1.dp, Color.Red),
